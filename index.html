@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PT School - Hệ Thống Khảo Thí</title>
+  <link rel="icon" href="logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -143,19 +144,18 @@
     class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
     <div class="glass-card w-full max-w-md p-8 shadow-2xl border border-white transition-all duration-300">
       <div class="text-center mb-6">
-        <div
-          class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg transform rotate-3 mb-4">
-          <i class="fa-solid fa-graduation-cap text-3xl text-white transform -rotate-3"></i>
+        <div class="w-20 h-20 mx-auto mb-4 bg-transparent rounded-2xl flex items-center justify-center shadow-lg overflow-hidden border border-slate-100">
+          <img src="logo.png" alt="Logo PT School" class="w-full h-full object-cover">
         </div>
         <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600">
           PT SCHOOL</h1>
       </div>
 
       <form id="auth-form" class="space-y-4">
-        <!-- KHỐI DÙNG CHUNG: Số Báo Danh -->
+        <!-- KHỐI DÙNG CHUNG: Số Báo Danh / Mã Quản trị -->
         <div>
-          <label class="block text-sm font-bold text-slate-700 mb-1">Số Báo Danh</label>
-          <input type="number" id="inp-sbd" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-blue-500 transition-colors bg-slate-50 focus:bg-white font-medium" placeholder="Chỉ nhập số">
+          <label id="lbl-sbd" class="block text-sm font-bold text-slate-700 mb-1">Số Báo Danh</label>
+          <input type="text" id="inp-sbd" required class="w-full px-4 py-2.5 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-blue-500 transition-colors bg-slate-50 focus:bg-white font-medium" placeholder="Nhập mã của em">
         </div>
 
         <!-- KHU VỰC 1: ĐĂNG NHẬP -->
@@ -174,6 +174,11 @@
           <button type="button" onclick="chuyenTrangThai('register')" class="w-full py-2.5 rounded-xl text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all border border-slate-300">
             Đăng ký / Khai báo hồ sơ mới
           </button>
+          
+          <!-- Lối đi bí mật cho Giáo viên -->
+          <div class="text-center mt-6">
+            <span onclick="chuyenTrangThai('admin')" class="text-xs font-bold text-slate-400 cursor-pointer hover:text-indigo-600 transition-colors"><i class="fa-solid fa-shield-halved mr-1"></i>Khu vực dành cho Giáo viên</span>
+          </div>
         </div>
 
         <!-- KHU VỰC 2: ĐĂNG KÝ MỚI -->
@@ -231,37 +236,37 @@
   <div id="dashboard-screen" class="hidden min-h-screen bg-slate-100 flex flex-col md:flex-row">
     <!-- Thanh Menu Bên Trái (Sidebar) -->
     <div class="w-full md:w-72 lg:w-80 bg-white shadow-2xl z-20 flex flex-col border-r border-slate-100">
-      <!-- Nhận diện Thương hiệu Gradient -->
-      <div class="p-6 border-b border-slate-100 flex items-center justify-center md:justify-start space-x-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-            <i class="fa-solid fa-graduation-cap text-xl text-white"></i>
+      <!-- Nhận diện Thương hiệu (Nền Trắng ngả Xanh nhạt) -->
+      <div class="p-6 border-b border-blue-100 flex items-center justify-center md:justify-start space-x-3 bg-gradient-to-b from-white to-slate-50">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-md overflow-hidden bg-white border border-blue-100">
+            <img src="logo.png" alt="Logo" class="w-full h-full object-cover p-0.5">
         </div>
-        <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">PT School</span>
+        <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight drop-shadow-sm">PT School</span>
       </div>
 
-      <!-- Avatar & Info (Nền Gradient Năng lượng & Hiện đại) -->
-      <div class="p-8 text-center relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white shadow-inner">
+      <!-- Avatar & Info (Nền Trắng ngả Xanh nhạt tinh tế) -->
+      <div class="p-8 text-center relative overflow-hidden bg-gradient-to-b from-slate-50 to-blue-50 border-b border-blue-100 shadow-inner">
         
-        <!-- Hiệu ứng ánh sáng lơ lửng phía sau (Glassmorphism) -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
-             <div class="absolute -top-10 -right-10 w-32 h-32 bg-white rounded-full blur-2xl"></div>
-             <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-300 rounded-full blur-xl"></div>
+        <!-- Hiệu ứng ánh sáng lơ lửng phía sau (Chuyển sang Xanh nhạt) -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-40 pointer-events-none">
+             <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-200 rounded-full blur-2xl"></div>
+             <div class="absolute bottom-0 left-0 w-24 h-24 bg-cyan-200 rounded-full blur-xl"></div>
         </div>
         
-        <!-- Khung Avatar Trắng Nổi bật -->
-        <div class="relative z-10 w-20 h-20 bg-white rounded-full mx-auto flex items-center justify-center text-indigo-600 text-3xl mb-4 border-4 border-indigo-200/50 shadow-xl transform transition hover:scale-105">
+        <!-- Khung Avatar Nổi bật (Nền xanh đậm, Icon trắng) -->
+        <div class="relative z-10 w-20 h-20 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full mx-auto flex items-center justify-center text-white text-3xl mb-4 border-4 border-white shadow-xl transform transition hover:scale-105">
           <i class="fa-solid fa-user-astronaut"></i>
         </div>
         
-        <!-- Thông tin cá nhân -->
-        <h3 class="relative z-10 font-bold text-xl line-clamp-1 tracking-wide text-white" id="dash-hoten">Đang tải...</h3>
+        <!-- Thông tin cá nhân (Chữ tối màu) -->
+        <h3 class="relative z-10 font-bold text-xl line-clamp-1 tracking-wide text-slate-800" id="dash-hoten">Đang tải...</h3>
         
-        <!-- Nhãn Lớp & SBD bo tròn (Kính mờ) -->
-        <div class="relative z-10 mt-3 bg-black/20 inline-block px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 shadow-sm">
-            <p class="text-xs font-medium text-indigo-50 tracking-wide">
-                Lớp: <span id="dash-lop" class="font-bold text-white text-sm">...</span> 
-                <span class="mx-2 opacity-50">|</span> 
-                SBD: <span id="dash-sbd" class="font-bold text-white text-sm">...</span>
+        <!-- Nhãn Lớp & SBD bo tròn (Nền trắng, chữ Xanh) -->
+        <div class="relative z-10 mt-3 bg-white inline-block px-4 py-1.5 rounded-full border border-blue-100 shadow-sm">
+            <p class="text-xs font-medium text-slate-500 tracking-wide">
+                Lớp: <span id="dash-lop" class="font-bold text-blue-700 text-sm">...</span> 
+                <span class="mx-2 opacity-30 text-slate-400">|</span> 
+                SBD: <span id="dash-sbd" class="font-bold text-blue-700 text-sm">...</span>
             </p>
         </div>
       </div>
@@ -287,22 +292,29 @@
     </div>
 
     <!-- Khu vực hiển thị nội dung chính bên phải -->
-    <div class="flex-1 p-4 md:p-8 overflow-y-auto">
+    <div class="flex-1 pt-1 px-4 md:px-8 overflow-y-auto">
       
       <!-- TAB 1: KHÓA HỌC E-LEARNING -->
       <div id="tab-khoahoc" class="block animate-fade-in">
         
-        <!-- LỜI CHÀO NĂNG LƯỢNG (HERO BANNER) -->
-        <div class="relative bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 mb-8 shadow-lg shadow-indigo-200 overflow-hidden text-white">
-            <!-- Họa tiết lơ lửng -->
-            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-white opacity-10 rounded-full blur-2xl"></div>
-            <div class="absolute bottom-0 right-32 w-24 h-24 bg-blue-300 opacity-20 rounded-full blur-xl"></div>
-            <div class="relative z-10">
-                <h2 class="text-3xl font-extrabold mb-2" id="hero-greeting">Chào ngày mới! ☀️</h2>
-                <p class="text-blue-100 text-lg font-medium max-w-lg mt-2">Mỗi bài học là một nấc thang đưa em đến gần hơn với ước mơ. Hôm nay em muốn chinh phục thử thách nào?</p>
+        <!-- LỜI CHÀO NĂNG LƯỢNG (CĂN CHUẨN THẲNG HÀNG LOGO) -->
+        <div class="relative bg-gradient-to-r from-white to-blue-50 border border-blue-100 rounded-2xl px-6 py-4 mb-6 shadow-sm overflow-hidden flex items-center justify-between">
+            
+            <!-- Họa tiết lơ lửng (Xanh nhạt) -->
+            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-sky-200 opacity-30 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-0 right-32 w-24 h-24 bg-cyan-200 opacity-20 rounded-full blur-xl"></div>
+            
+            <!-- Khu vực Text (Ép 1 dòng) -->
+            <div class="relative z-10 flex-1 min-w-0 pr-4">
+                <h2 class="text-2xl font-black mb-0.5 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500 tracking-tight drop-shadow-sm" id="hero-greeting">Chào ngày mới! ☀️</h2>
+                <p class="text-indigo-600 text-[13px] font-bold italic tracking-wide truncate">Mỗi bài học là một nấc thang đưa em đến gần hơn với ước mơ. Hôm nay em muốn chinh phục thử thách nào?</p>
             </div>
-            <!-- Icon tên lửa làm chìm -->
-            <i class="fa-solid fa-rocket absolute right-8 -bottom-4 text-8xl text-white opacity-10 transform -rotate-12"></i>
+            
+            <!-- Icon tên lửa -->
+            <div class="relative z-10 flex-shrink-0">
+                <i class="fa-solid fa-rocket text-4xl text-sky-200 opacity-60 transform -rotate-12 hover:scale-110 transition-transform cursor-pointer"></i>
+            </div>
+            
         </div>
         
         <h3 class="text-xl font-bold text-slate-800 mb-5 flex items-center"><i class="fa-solid fa-book-bookmark text-indigo-500 mr-3"></i> Lộ trình của em</h3>
@@ -567,7 +579,7 @@
         let modeDangNhap = 'login'; // Mặc định là chế độ Đăng nhập
         let allInOneData = null; // CÁI "VALI" CHỨA TOÀN BỘ DỮ LIỆU TỪ MÁY CHỦ
 
-        // --- HÀM CHUYỂN TRẠNG THÁI GIAO DIỆN (3 TRONG 1) ---
+        // --- HÀM CHUYỂN TRẠNG THÁI GIAO DIỆN (4 TRONG 1) ---
         function chuyenTrangThai(mode) {
             modeDangNhap = mode;
             
@@ -576,7 +588,13 @@
             document.getElementById('register-fields').classList.replace('block', 'hidden');
             document.getElementById('forgot-fields').classList.replace('block', 'hidden');
             
-            // 2. Gỡ bắt buộc (required) cho các trường để tránh bị kẹt Form HTML5
+            // Khôi phục giao diện chuẩn cho Học sinh
+            document.getElementById('lbl-sbd').innerText = "Số Báo Danh";
+            document.getElementById('inp-sbd').placeholder = "Nhập mã của em";
+            document.getElementById('btn-submit-auth').innerHTML = `ĐĂNG NHẬP <i class="fa-solid fa-arrow-right ml-2"></i>`;
+            document.getElementById('btn-submit-auth').className = "w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg mt-2 text-lg";
+
+            // 2. Gỡ bắt buộc (required)
             document.getElementById('inp-matkhau').removeAttribute('required');
             document.getElementById('inp-matkhau-dk').removeAttribute('required');
             document.getElementById('inp-hoten').removeAttribute('required');
@@ -586,6 +604,14 @@
             if (mode === 'login') {
                 document.getElementById('login-fields').classList.replace('hidden', 'block');
                 document.getElementById('inp-matkhau').setAttribute('required', 'true');
+            } else if (mode === 'admin') {
+                // GIAO DIỆN DÀNH RIÊNG CHO GIÁO VIÊN
+                document.getElementById('login-fields').classList.replace('hidden', 'block');
+                document.getElementById('inp-matkhau').setAttribute('required', 'true');
+                document.getElementById('lbl-sbd').innerHTML = `<i class="fa-solid fa-user-tie mr-1 text-indigo-600"></i> Mã Quản trị / Tên đăng nhập`;
+                document.getElementById('inp-sbd').placeholder = "Nhập mã Giáo viên";
+                document.getElementById('btn-submit-auth').innerHTML = `<i class="fa-solid fa-shield-halved mr-2"></i> ĐĂNG NHẬP QUẢN TRỊ`;
+                document.getElementById('btn-submit-auth').className = "w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-black hover:to-slate-800 text-white font-bold py-3 px-4 rounded-xl shadow-lg mt-2 text-lg border border-slate-700";
             } else if (mode === 'register') {
                 document.getElementById('register-fields').classList.replace('hidden', 'block');
                 document.getElementById('inp-matkhau-dk').setAttribute('required', 'true');
@@ -596,6 +622,7 @@
             }
         }
 
+        
         // --- XỬ LÝ SUBMIT (ĐĂNG NHẬP / ĐĂNG KÝ) ---
         document.getElementById('auth-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -606,43 +633,74 @@
             
             if (modeDangNhap === 'register') {
                 actionApi = "dangKy";
-                payload.matKhau = document.getElementById('inp-matkhau-dk').value.trim(); // Lấy MK từ form Đăng ký
+                payload.matKhau = document.getElementById('inp-matkhau-dk').value.trim(); 
                 payload.hoTen = document.getElementById('inp-hoten').value.trim();
                 payload.maLop = document.getElementById('inp-lop').value.trim().toUpperCase();
                 payload.gmail = document.getElementById('inp-gmail').value.trim();
                 showLoading("Đang tạo hồ sơ bảo mật...");
             } else if (modeDangNhap === 'login') {
                 actionApi = "dangNhap";
-                payload.matKhau = document.getElementById('inp-matkhau').value.trim(); // Lấy MK từ form Đăng nhập
-                showLoading("Đang xác thực thông tin...");
+                payload.role = "student"; // GẮN NHÃN LÀ HỌC SINH
+                payload.matKhau = document.getElementById('inp-matkhau').value.trim(); 
+                showLoading("Đang xác thực thông tin Học sinh...");
+            } else if (modeDangNhap === 'admin') {
+                actionApi = "dangNhap";
+                payload.role = "teacher"; // GẮN NHÃN LÀ GIÁO VIÊN
+                payload.matKhau = document.getElementById('inp-matkhau').value.trim();
+                showLoading("Đang xác thực quyền Quản trị...");
             } else {
-                return; // Chặn nếu vô tình nhấn Enter lúc ở form Quên mật khẩu
+                return; 
             }
             
             guiDuLieu(actionApi, payload).then(res => {
                 hideLoading();
                 if(res.status === "success") {
                     userToken = res.token;
-                    maLopHienTai = res.maLop;
-                    hsInfo = { hoTen: res.hoTen, lop: res.maLop, sbd: sbdInput, gmail: res.gmail || "", hocKy: "HK1" };
                     
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('dashboard-screen').classList.remove('hidden');
-                    
-                    document.getElementById('dash-hoten').innerText = res.hoTen;
-                    // Tính toán lời chào năng lượng theo giờ thực tế
-                    const currentHour = new Date().getHours();
-                    let greetingText = "Chào ngày mới, ";
-                    if (currentHour >= 12 && currentHour < 18) greetingText = "Chào buổi chiều, ";
-                    else if (currentHour >= 18) greetingText = "Chào buổi tối, ";
-                    
-                    // Lấy tên gọi ngắn (Từ cuối cùng trong Họ Tên)
-                    let shortName = res.hoTen.split(" ").pop();
-                    let heroEl = document.getElementById('hero-greeting');
-                    if (heroEl) heroEl.innerText = greetingText + shortName + "! 🚀";
-                    document.getElementById('dash-lop').innerText = res.maLop;
-                    document.getElementById('dash-sbd').innerText = sbdInput;
-                    taiDanhSachNhiemVu();
+                    // PHÂN LUỒNG MÀN HÌNH SAU KHI ĐĂNG NHẬP THÀNH CÔNG
+                    if (payload.role === "teacher" || res.role === "admin") {
+                        // --- LUỒNG GIÁO VIÊN ---
+                        hsInfo = { hoTen: res.hoTen || "Giáo viên Quản trị", sbd: "ADMIN", lop: "ALL" };
+                        
+                        document.getElementById('login-screen').classList.add('hidden');
+                        document.getElementById('dashboard-screen').classList.remove('hidden');
+                        
+                        // Cập nhật thông tin lên thanh Menu bên trái
+                        document.getElementById('dash-hoten').innerText = hsInfo.hoTen;
+                        document.getElementById('dash-lop').innerText = "QUẢN TRỊ";
+                        document.getElementById('dash-sbd').innerText = "ADMIN";
+                        
+                        // ẨN TOÀN BỘ KHUNG LỜI CHÀO ĐỐI VỚI GIÁO VIÊN
+                        let heroEl = document.getElementById('hero-greeting');
+                        if (heroEl) {
+                            // Tìm ngược ra thẻ khung bọc ngoài cùng và giấu nó đi
+                            heroEl.parentElement.parentElement.classList.add('hidden');
+                        }
+                        
+                        // KÍCH HOẠT CỖ MÁY TẢI DỮ LIỆU TOÀN TRƯỜNG
+                        taiDanhSachNhiemVuGiaoVien();
+                        
+                    } else {
+                        // --- LUỒNG HỌC SINH (Giữ nguyên như cũ) ---
+                        maLopHienTai = res.maLop;
+                        hsInfo = { hoTen: res.hoTen, lop: res.maLop, sbd: sbdInput, gmail: res.gmail || "", hocKy: "HK1" };
+                        
+                        document.getElementById('login-screen').classList.add('hidden');
+                        document.getElementById('dashboard-screen').classList.remove('hidden');
+                        
+                        document.getElementById('dash-hoten').innerText = res.hoTen;
+                        const currentHour = new Date().getHours();
+                        let greetingText = "Chào ngày mới, ";
+                        if (currentHour >= 12 && currentHour < 18) greetingText = "Chào buổi chiều, ";
+                        else if (currentHour >= 18) greetingText = "Chào buổi tối, ";
+                        
+                        let shortName = res.hoTen.split(" ").pop();
+                        let heroEl = document.getElementById('hero-greeting');
+                        if (heroEl) heroEl.innerText = greetingText + shortName + "! 🚀";
+                        document.getElementById('dash-lop').innerText = res.maLop;
+                        document.getElementById('dash-sbd').innerText = sbdInput;
+                        taiDanhSachNhiemVu();
+                    }
                 } else {
                     alert("LỖI: " + res.message);
                 }
@@ -702,13 +760,14 @@
                             
                             boxKhoaHoc.innerHTML += `
                             <div class="group bg-white rounded-3xl p-5 shadow-sm hover:shadow-2xl border border-slate-100 hover:border-blue-200 transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden flex flex-col">
-                                <!-- Lớp màu nền mờ ảo phía trên thẻ -->
-                                <div class="absolute top-0 left-0 w-full h-16 bg-gradient-to-r from-blue-50 to-indigo-50 opacity-60"></div>
+                                <!-- Lớp màu nền Sáng - Tươi mới và Năng lượng -->
+                                <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
                                 
-                                <div class="relative z-10 flex items-start space-x-4 mb-4 mt-2">
-                                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center text-2xl shadow-md flex-shrink-0"><i class="fa-solid fa-play ml-1"></i></div>
-                                    <div class="flex-1">
-                                        <h3 class="font-bold text-lg text-slate-800 line-clamp-2 leading-tight group-hover:text-blue-700 transition-colors">${item.tenBai}</h3>
+                                <div class="relative z-10 flex items-start space-x-4 mb-5 mt-1">
+                                    <!-- Icon với hiệu ứng Kính mờ (Glassmorphism) -->
+                                    <div class="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-md text-white flex items-center justify-center text-2xl shadow-inner border border-white/30 flex-shrink-0"><i class="fa-solid fa-play ml-1"></i></div>
+                                    <div class="flex-1 pt-1">
+                                        <h3 class="font-bold text-lg text-white line-clamp-2 leading-tight drop-shadow-md">${item.tenBai}</h3>
                                     </div>
                                 </div>
                                 
@@ -752,6 +811,350 @@
 
                 } else { alert("LỖI: " + res.message); }
             }).catch(loiKetNoi);
+        }
+
+        // =========================================================
+        // GIAI ĐOẠN 2: CÁC HÀM TẠO GIAO DIỆN DÀNH RIÊNG CHO GIÁO VIÊN
+        // =========================================================
+        function taiDanhSachNhiemVuGiaoVien() {
+            showLoading("Đang nạp dữ liệu toàn trường từ máy chủ...");
+            guiDuLieu("layDuLieuGiaoVien", { token: userToken }).then(res => {
+                hideLoading();
+                if(res.status === "success") {
+                    allInOneData = res.data; // Lưu Vali dữ liệu vào bộ nhớ tạm
+
+                    // 1. Quét tìm tất cả các tên Lớp đang có mặt trên hệ thống
+                    let dsLop = new Set();
+                    allInOneData.nhiemVu.forEach(nv => {
+                        if (nv[8]) {
+                            nv[8].split(',').forEach(l => {
+                               let trimmed = l.trim().toUpperCase();
+                               if(trimmed !== "" && trimmed !== "TẤT CẢ") dsLop.add(trimmed);
+                            });
+                        }
+                    });
+                    
+                    // Tạo danh sách thả xuống (Dropdown)
+                    let optHtml = `<option value="ALL">Tất cả các lớp</option>`;
+                    Array.from(dsLop).sort().forEach(l => { optHtml += `<option value="${l}">Lớp ${l}</option>`; });
+
+                    // 2. BƠM KHUNG GIAO DIỆN VÀO TAB 1: KHÓA HỌC (GỘP TIÊU ĐỀ & BỘ LỌC)
+                    const boxKhoaHoc = document.getElementById('danh-sach-khoa-hoc');
+                    boxKhoaHoc.innerHTML = `
+                    <div class="col-span-full mb-6 bg-gradient-to-r from-slate-50 via-white to-indigo-50 p-4 rounded-2xl shadow-sm border border-indigo-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 shadow-inner"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            Quản lý Khóa học E-Learning
+                        </h3>
+                        <div class="flex items-center space-x-3 bg-white py-1.5 px-4 rounded-xl border border-slate-200 shadow-sm">
+                            <i class="fa-solid fa-filter text-indigo-500"></i>
+                            <span class="font-bold text-slate-600 text-sm">Lọc thống kê:</span>
+                            <select id="filter-khoahoc" onchange="renderAdminKhoaHoc()" class="border-none bg-transparent focus:ring-0 font-black text-indigo-700 text-sm outline-none cursor-pointer pr-8">
+                                ${optHtml}
+                            </select>
+                        </div>
+                    </div>
+                    <div id="admin-grid-khoahoc" class="col-span-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>`;
+
+                    // 3. BƠM KHUNG GIAO DIỆN VÀO TAB 2: BÀI THI (GỘP TIÊU ĐỀ & BỘ LỌC)
+                    const boxBaiThi = document.getElementById('danh-sach-bai-thi');
+                    boxBaiThi.innerHTML = `
+                    <div class="col-span-full mb-6 bg-gradient-to-r from-slate-50 via-white to-orange-50 p-4 rounded-2xl shadow-sm border border-orange-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center">
+                            <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center mr-3 shadow-inner"><i class="fa-solid fa-file-signature"></i></div>
+                            Quản lý Bài thi Khảo thí
+                        </h3>
+                        <div class="flex items-center space-x-3 bg-white py-1.5 px-4 rounded-xl border border-slate-200 shadow-sm">
+                            <i class="fa-solid fa-filter text-orange-500"></i>
+                            <span class="font-bold text-slate-600 text-sm">Lọc thống kê:</span>
+                            <select id="filter-baithi" onchange="renderAdminBaiThi()" class="border-none bg-transparent focus:ring-0 font-black text-orange-700 text-sm outline-none cursor-pointer pr-8">
+                                ${optHtml}
+                            </select>
+                        </div>
+                    </div>
+                    <div id="admin-grid-baithi" class="col-span-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>`;
+
+                    // ẨN TIÊU ĐỀ BỊ DƯ THỪA CỦA HỌC SINH MẶC ĐỊNH
+                    let h3KhoaHoc = document.querySelector('#tab-khoahoc > h3');
+                    if(h3KhoaHoc) h3KhoaHoc.classList.add('hidden');
+                    let h2BaiThi = document.querySelector('#tab-baithi > h2');
+                    if(h2BaiThi) h2BaiThi.classList.add('hidden');
+
+                    // 4. Lấp đầy dữ liệu vào thẻ
+                    renderAdminKhoaHoc();
+                    renderAdminBaiThi();
+
+                } else { alert("LỖI: " + res.message); }
+            }).catch(loiKetNoi);
+        }
+
+        // HÀM VẼ CÁC THẺ KHÓA HỌC DÀNH CHO GIÁO VIÊN
+        function renderAdminKhoaHoc() {
+            let filter = document.getElementById('filter-khoahoc').value;
+            let grid = document.getElementById('admin-grid-khoahoc');
+            grid.innerHTML = "";
+            
+            // Lọc ra các dòng bắt đầu bằng KH (Khóa học)
+            let nhiemVuList = allInOneData.nhiemVu.filter(nv => String(nv[0]).startsWith("KH"));
+            if(filter !== "ALL") {
+                nhiemVuList = nhiemVuList.filter(nv => String(nv[8]).toUpperCase().includes(filter) || String(nv[8]).toUpperCase() === "TẤT CẢ");
+            }
+
+            if(nhiemVuList.length === 0) {
+                 grid.innerHTML = `<p class="col-span-full text-center text-slate-500 mt-5">Chưa có khóa học nào cho lớp này.</p>`; return;
+            }
+
+            nhiemVuList.forEach(nv => {
+                let maNV = nv[0]; let tenNV = nv[1]; let trangThai = nv[5];
+                let soHSHoanThanh = 0; let soHSDangHoc = 0;
+                
+                // Thuật toán quét và đếm tiến độ
+                allInOneData.tienDo.forEach(td => {
+                    if(String(td[4]).startsWith(maNV) && (filter === "ALL" || String(td[1]).toUpperCase() === filter)) {
+                        if(td[5] == 100 || String(td[6]).toLowerCase() === "hoàn thành") soHSHoanThanh++;
+                        else soHSDangHoc++;
+                    }
+                });
+                
+                let statusHtml = trangThai === 'Mở' ? `<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-md flex items-center"><span class="animate-pulse w-2 h-2 bg-emerald-500 rounded-full mr-1.5"></span>Đang Mở</span>` : `<span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-md flex items-center"><i class="fa-solid fa-lock mr-1.5"></i>Đã Khóa</span>`;
+
+                grid.innerHTML += `
+                <div class="bg-white rounded-3xl p-5 shadow-sm hover:shadow-lg border border-slate-200 hover:border-blue-300 flex flex-col relative overflow-hidden transition-all">
+                    <div class="absolute top-0 left-0 w-full h-1.5 ${trangThai === 'Mở' ? 'bg-emerald-400' : 'bg-red-400'}"></div>
+                    <div class="flex justify-between items-start mb-3 mt-1">
+                        <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">Mã: ${maNV}</span>
+                        ${statusHtml}
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-2 mb-4">${tenNV}</h3>
+                    
+                    <div class="mt-auto bg-slate-50 rounded-xl p-3 border border-slate-100 mb-4">
+                        <p class="text-xs font-bold text-slate-500 mb-2 flex justify-between"><span>Tiến độ tổng:</span> <span class="text-blue-600">${soHSHoanThanh} đã xong</span></p>
+                        <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${soHSHoanThanh > 0 ? '100' : '0'}%"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1"><i class="fa-solid fa-rotate mr-1"></i> Đang xem: ${soHSDangHoc} HS</p>
+                    </div>
+                    
+                    <button onclick="xemChiTietAdmin('${maNV}')" class="w-full py-2.5 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white font-bold rounded-xl transition-colors shadow-sm"><i class="fa-solid fa-chart-simple mr-2"></i>Báo Cáo Tiến Độ</button>
+                </div>`;
+            });
+        }
+
+        // HÀM VẼ CÁC THẺ BÀI THI DÀNH CHO GIÁO VIÊN
+        function renderAdminBaiThi() {
+            let filter = document.getElementById('filter-baithi').value;
+            let grid = document.getElementById('admin-grid-baithi');
+            grid.innerHTML = "";
+            
+            // Lọc ra các bài thi (Không bắt đầu bằng KH)
+            let nhiemVuList = allInOneData.nhiemVu.filter(nv => !String(nv[0]).startsWith("KH"));
+            if(filter !== "ALL") {
+                nhiemVuList = nhiemVuList.filter(nv => String(nv[8]).toUpperCase().includes(filter) || String(nv[8]).toUpperCase() === "TẤT CẢ");
+            }
+
+            if(nhiemVuList.length === 0) {
+                 grid.innerHTML = `<p class="col-span-full text-center text-slate-500 mt-5">Chưa có bài thi nào cho lớp này.</p>`; return;
+            }
+
+            nhiemVuList.forEach(nv => {
+                let maNV = nv[0]; let tenNV = nv[1]; let trangThai = nv[5];
+                let soHSNop = 0; 
+                
+                // Đếm sĩ số thu bài dựa trên Kho Dữ Liệu
+                allInOneData.diemThi.forEach(dt => {
+                    if(String(dt[3]) === maNV && String(dt[15]) === "Đã nộp" && (filter === "ALL" || String(dt[4]).toUpperCase() === filter)) {
+                        soHSNop++;
+                    }
+                });
+                
+                let statusHtml = trangThai === 'Mở' ? `<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-md flex items-center"><span class="animate-pulse w-2 h-2 bg-emerald-500 rounded-full mr-1.5"></span>Đang Mở</span>` : `<span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-md flex items-center"><i class="fa-solid fa-lock mr-1.5"></i>Đã Khóa</span>`;
+
+                grid.innerHTML += `
+                <div class="bg-white rounded-3xl p-5 shadow-sm hover:shadow-lg border border-slate-200 hover:border-orange-300 flex flex-col relative overflow-hidden transition-all">
+                    <div class="absolute top-0 left-0 w-full h-1.5 ${trangThai === 'Mở' ? 'bg-emerald-400' : 'bg-red-400'}"></div>
+                    <div class="flex justify-between items-start mb-3 mt-1">
+                        <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-200">Mã: ${maNV}</span>
+                        ${statusHtml}
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-2 mb-4">${tenNV}</h3>
+                    
+                    <div class="mt-auto bg-orange-50 rounded-xl p-3 border border-orange-100 mb-4 flex items-center justify-between">
+                        <div class="flex items-center text-orange-600 font-bold text-sm">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-2 shadow-sm"><i class="fa-solid fa-file-signature"></i></div>
+                            Đã thu bài:
+                        </div>
+                        <span class="text-xl font-black text-orange-700">${soHSNop} HS</span>
+                    </div>
+                    
+                    <button onclick="xemChiTietAdmin('${maNV}')" class="w-full py-2.5 bg-orange-600 text-white hover:bg-orange-700 font-bold rounded-xl transition-colors shadow-md"><i class="fa-solid fa-chart-pie mr-2"></i>Báo Cáo Điểm</button>
+                </div>`;
+            });
+        }
+        
+        // --- 1. TÍNH NĂNG LIÊN THÔNG: Chuyển từ Tab 1/Tab 2 sang Tab 3 ---
+        function xemChiTietAdmin(maNV) {
+            chuyenTab('tab-ketqua'); // Tự động chuyển tab (và vẽ khung HTML Control Panel)
+            
+            // Đợi 50 mili-giây để DOM kịp vẽ xong thanh Dropdown rồi mới ép nó chọn giá trị
+            setTimeout(() => {
+                let selectNV = document.getElementById('tk-chon-nhiemvu');
+                if(selectNV) {
+                    selectNV.value = maNV;
+                    renderAdminThongKe(); // Kích hoạt vẽ báo cáo
+                }
+            }, 50);
+        }
+
+        // --- 2. NẠP DỮ LIỆU VÀO THANH ĐIỀU KHIỂN ---
+        function napDropdownThongKeAdmin() {
+            let selectNV = document.getElementById('tk-chon-nhiemvu');
+            let selectLop = document.getElementById('tk-chon-lop');
+            
+            // Đổ danh sách Nhiệm Vụ vào ô chọn
+            let htmlNV = `<option value="">-- Chọn Nhiệm vụ --</option><optgroup label="Khóa học E-Learning">`;
+            allInOneData.nhiemVu.filter(nv => String(nv[0]).startsWith("KH")).forEach(nv => { htmlNV += `<option value="${nv[0]}">[${nv[0]}] ${nv[1]}</option>`; });
+            htmlNV += `</optgroup><optgroup label="Bài thi Khảo thí">`;
+            allInOneData.nhiemVu.filter(nv => !String(nv[0]).startsWith("KH")).forEach(nv => { htmlNV += `<option value="${nv[0]}">[${nv[0]}] ${nv[1]}</option>`; });
+            htmlNV += `</optgroup>`;
+            selectNV.innerHTML = htmlNV;
+
+            // Đổ danh sách Lớp vào ô chọn
+            let dsLop = new Set();
+            allInOneData.nhiemVu.forEach(nv => {
+                if (nv[8]) nv[8].split(',').forEach(l => {
+                    let trimmed = l.trim().toUpperCase();
+                    if(trimmed !== "" && trimmed !== "TẤT CẢ") dsLop.add(trimmed);
+                });
+            });
+            let optLop = `<option value="ALL">Tất cả Lớp</option>`;
+            Array.from(dsLop).sort().forEach(l => { optLop += `<option value="${l}">Lớp ${l}</option>`; });
+            selectLop.innerHTML = optLop;
+        }
+
+        // --- 3. ĐIỀU PHỐI KHÔNG GIAN ĐỘNG ---
+        function renderAdminThongKe() {
+            let maNV = document.getElementById('tk-chon-nhiemvu').value;
+            let filterLop = document.getElementById('tk-chon-lop').value;
+            let displayArea = document.getElementById('tk-hien-thi-dong');
+
+            if (!maNV) {
+                displayArea.innerHTML = `<div class="flex flex-col items-center justify-center p-12 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-center"><i class="fa-solid fa-mug-hot text-6xl text-slate-200 mb-4"></i><h4 class="text-xl font-bold text-slate-400 mb-2">Chưa chọn dữ liệu</h4><p class="text-slate-400 font-medium">Vui lòng chọn một Nhiệm vụ ở phía trên để xem báo cáo chi tiết.</p></div>`;
+                return;
+            }
+
+            if (maNV.startsWith("KH")) renderThongKeKhoaHoc(maNV, filterLop, displayArea);
+            else renderThongKeBaiThi(maNV, filterLop, displayArea);
+        }
+
+        // --- 4A. VẼ BÁO CÁO KHÓA HỌC (E-LEARNING) ---
+        function renderThongKeKhoaHoc(maNV, filterLop, displayArea) {
+            let hsHoanThanh = []; let hsDangHoc = [];
+            
+            allInOneData.tienDo.forEach(td => {
+                if(String(td[4]).startsWith(maNV) && (filterLop === "ALL" || String(td[1]).toUpperCase() === filterLop)) {
+                    let info = { lop: td[1], sbd: td[2], hoTen: td[3], tienDo: td[5] };
+                    if(td[5] == 100 || String(td[6]).toLowerCase() === "hoàn thành") hsHoanThanh.push(info);
+                    else hsDangHoc.push(info);
+                }
+            });
+
+            displayArea.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-emerald-200 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 font-bold mb-1">Đã Hoàn Thành (100%)</p><p class="text-3xl font-black text-emerald-600">${hsHoanThanh.length}</p></div>
+                        <div class="w-14 h-14 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shadow-sm"><i class="fa-solid fa-check-double"></i></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-amber-200 flex items-center justify-between">
+                        <div><p class="text-sm text-slate-500 font-bold mb-1">Đang Học Dở Dang</p><p class="text-3xl font-black text-amber-500">${hsDangHoc.length}</p></div>
+                        <div class="w-14 h-14 rounded-xl bg-amber-100 text-amber-500 flex items-center justify-center text-2xl shadow-sm"><i class="fa-solid fa-spinner"></i></div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex items-center"><i class="fa-solid fa-users text-indigo-500 mr-2"></i> Danh sách Học viên Tương tác</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                        <div class="p-4 h-96 overflow-y-auto bg-white">
+                            <h4 class="text-[11px] font-black text-emerald-600 mb-3 uppercase tracking-wider bg-emerald-50 py-1.5 px-3 rounded-md">Danh sách Hoàn thành</h4>
+                            <ul class="space-y-2">
+                                ${hsHoanThanh.map(hs => `<li class="flex justify-between items-center text-sm p-2.5 hover:bg-slate-50 rounded-lg border border-transparent hover:border-slate-100 transition-colors"><span class="font-bold text-slate-700">${hs.hoTen}</span><span class="text-xs font-medium text-slate-500 bg-white px-2 py-1 rounded shadow-sm border border-slate-100">${hs.lop} - ${hs.sbd}</span></li>`).join('') || '<li class="text-sm text-slate-400 italic px-2">Trống</li>'}
+                            </ul>
+                        </div>
+                        <div class="p-4 h-96 overflow-y-auto bg-white">
+                            <h4 class="text-[11px] font-black text-amber-600 mb-3 uppercase tracking-wider bg-amber-50 py-1.5 px-3 rounded-md">Danh sách Đang học</h4>
+                            <ul class="space-y-2">
+                                ${hsDangHoc.map(hs => `<li class="flex justify-between items-center text-sm p-2.5 hover:bg-slate-50 rounded-lg border border-transparent hover:border-slate-100 transition-colors"><span class="font-bold text-slate-700">${hs.hoTen} <span class="ml-2 text-[10px] font-black text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded">${hs.tienDo}%</span></span><span class="text-xs font-medium text-slate-500 bg-white px-2 py-1 rounded shadow-sm border border-slate-100">${hs.lop} - ${hs.sbd}</span></li>`).join('') || '<li class="text-sm text-slate-400 italic px-2">Trống</li>'}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 4B. VẼ BÁO CÁO BÀI THI (KHẢO THÍ) ---
+        function renderThongKeBaiThi(maNV, filterLop, displayArea) {
+            let giois = 0, khas = 0, tbs = 0, yeus = 0, tongDiem = 0, soHS = 0;
+            let dsHS = [];
+
+            allInOneData.diemThi.forEach(dt => {
+                if(String(dt[3]) === maNV && String(dt[15]) === "Đã nộp" && (filterLop === "ALL" || String(dt[4]).toUpperCase() === filterLop)) {
+                    let diem = parseFloat(dt[13]);
+                    if(!isNaN(diem)) {
+                        soHS++; tongDiem += diem;
+                        if(diem >= 8) giois++; else if(diem >= 6.5) khas++; else if(diem >= 5) tbs++; else yeus++;
+                        dsHS.push({ thoiGian: dt[0], lop: dt[4], sbd: dt[5], hoTen: dt[6], diem: diem });
+                    }
+                }
+            });
+
+            dsHS.sort((a, b) => b.diem - a.diem); // Sắp xếp Điểm từ cao xuống thấp
+            let diemTrungBinh = soHS > 0 ? (tongDiem / soHS).toFixed(2) : "0.00";
+
+            displayArea.innerHTML = `
+                <!-- Khối điện tử Phổ Điểm -->
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-emerald-500 text-center"><p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Giỏi (≥8)</p><p class="text-2xl font-black text-emerald-600 mt-1">${giois}</p></div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-blue-500 text-center"><p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Khá (6.5-7.9)</p><p class="text-2xl font-black text-blue-600 mt-1">${khas}</p></div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-amber-500 text-center"><p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">TB (5-6.4)</p><p class="text-2xl font-black text-amber-500 mt-1">${tbs}</p></div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-red-500 text-center"><p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Yếu (<5)</p><p class="text-2xl font-black text-red-500 mt-1">${yeus}</p></div>
+                    <div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-indigo-500 to-purple-600 p-4 rounded-2xl shadow-sm text-center flex flex-col justify-center text-white transform hover:scale-105 transition-transform"><p class="text-[11px] font-bold text-indigo-200 uppercase tracking-wider">Điểm Trung Bình</p><p class="text-3xl font-black mt-1 drop-shadow-sm">${diemTrungBinh}</p></div>
+                </div>
+                
+                <!-- Bảng Xếp Hạng Điểm Số -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-4">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-slate-700 flex justify-between items-center">
+                        <div><i class="fa-solid fa-ranking-star text-amber-500 mr-2"></i> Bảng Xếp Hạng Điểm Số</div>
+                        <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 shadow-sm">Đã nộp: ${soHS} HS</span>
+                    </div>
+                    <div class="max-h-[500px] overflow-y-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-white shadow-sm z-10 outline outline-1 outline-slate-100">
+                                <tr class="text-slate-500 text-[11px] uppercase tracking-wider">
+                                    <th class="px-4 py-3.5 font-bold text-center w-16">Hạng</th>
+                                    <th class="px-4 py-3.5 font-bold">Họ Tên</th>
+                                    <th class="px-4 py-3.5 font-bold">Lớp</th>
+                                    <th class="px-4 py-3.5 font-bold">SBD</th>
+                                    <th class="px-4 py-3.5 font-bold text-right pr-6">Điểm</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 bg-white">
+                                ${dsHS.map((hs, index) => {
+                                    let colorClass = hs.diem >= 8 ? 'text-emerald-600' : (hs.diem >= 6.5 ? 'text-blue-600' : (hs.diem >= 5 ? 'text-amber-500' : 'text-red-600'));
+                                    let rankTrophy = index === 0 ? '<i class="fa-solid fa-trophy text-yellow-400 text-xl drop-shadow-sm"></i>' : (index === 1 ? '<i class="fa-solid fa-medal text-slate-300 text-xl drop-shadow-sm"></i>' : (index === 2 ? '<i class="fa-solid fa-medal text-amber-700 text-xl drop-shadow-sm"></i>' : `<span class="font-bold text-slate-400 text-sm">#${index + 1}</span>`));
+                                    let bgClass = index < 3 ? 'bg-amber-50/20' : '';
+                                    return `
+                                    <tr class="hover:bg-slate-50 transition-colors ${bgClass}">
+                                        <td class="px-4 py-3 text-center align-middle">${rankTrophy}</td>
+                                        <td class="px-4 py-3 font-bold text-slate-800">${hs.hoTen}</td>
+                                        <td class="px-4 py-3 text-sm font-medium text-slate-500">${hs.lop}</td>
+                                        <td class="px-4 py-3 text-sm font-medium text-slate-500">${hs.sbd}</td>
+                                        <td class="px-4 py-3 font-black text-right text-lg pr-6 ${colorClass}">${hs.diem}</td>
+                                    </tr>`;
+                                }).join('') || '<tr><td colspan="5" class="px-4 py-10 text-center text-slate-400 italic">Chưa có học sinh nào nộp bài.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
         }
 
         // --- TÍNH NĂNG MỞ KHÓA (PHÂN LUỒNG THÔNG MINH) ---
@@ -825,6 +1228,38 @@
         // --- TRUNG TÂM PHÂN TÍCH (ĐỌC TỪ RAM) ---
         function taiThongKeKetQua() {
             if(!allInOneData) return; // Chống lỗi nếu RAM chưa kịp tải
+            // NẾU LÀ GIÁO VIÊN: Ghi đè toàn bộ Tab 3 thành Trung Tâm Báo Cáo
+            if (hsInfo.sbd === "ADMIN") {
+                let tab3 = document.getElementById('tab-ketqua');
+                // Nếu chưa tạo khung UI Admin thì mới tạo (để chống nhấp nháy màn hình)
+                if (!document.getElementById('tk-chon-nhiemvu')) {
+                    tab3.innerHTML = `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-chart-pie"></i></div>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-800">Báo cáo Phân tích</h2>
+                                <p class="text-sm text-slate-500 font-medium">Trung tâm Dữ liệu Toàn trường</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <select id="tk-chon-nhiemvu" onchange="renderAdminThongKe()" class="border-2 border-slate-200 rounded-xl px-4 py-2.5 focus:ring-0 focus:border-indigo-500 font-bold text-slate-700 bg-slate-50 outline-none w-full sm:w-72 truncate cursor-pointer">
+                                <option value="">-- Chọn Nhiệm vụ --</option>
+                            </select>
+                            <select id="tk-chon-lop" onchange="renderAdminThongKe()" class="border-2 border-slate-200 rounded-xl px-4 py-2.5 focus:ring-0 focus:border-indigo-500 font-bold text-slate-700 bg-slate-50 outline-none w-full sm:w-40 cursor-pointer">
+                                <option value="ALL">Tất cả Lớp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Khu vực Hiển thị Động -->
+                    <div id="tk-hien-thi-dong" class="space-y-6 animate-fade-in">
+                        <div class="flex flex-col items-center justify-center p-12 bg-white rounded-3xl border-2 border-dashed border-slate-200 text-center"><i class="fa-solid fa-mug-hot text-6xl text-slate-200 mb-4"></i><h4 class="text-xl font-bold text-slate-400 mb-2">Chưa chọn dữ liệu</h4><p class="text-slate-400 font-medium">Vui lòng chọn một Nhiệm vụ ở phía trên để xem báo cáo chi tiết.</p></div>
+                    </div>`;
+                    
+                    napDropdownThongKeAdmin(); // Gọi hàm nạp dữ liệu vào thanh Dropdown
+                }
+                return; // Kết thúc sớm luồng của Giáo viên
+            }
             document.getElementById('chart-ten-lop').innerText = hsInfo.lop;
 
             // 1. Tính toán Thẻ KPI
