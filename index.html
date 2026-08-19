@@ -15,6 +15,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- THƯ VIỆN ĐIỀU KHIỂN YOUTUBE VIDEO -->
   <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- THƯ VIỆN FIREBASE CLOUD FIRESTORE -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -541,20 +544,31 @@
   <script>
     // --- 1. NGĂN CHẶN TRÌNH DUYỆT NHÚNG ---
         window.addEventListener('DOMContentLoaded', () => {
+            // Màng lọc siêu nhạy: Nhận diện mọi trình duyệt nhúng của Mạng xã hội
             const ua = navigator.userAgent || navigator.vendor || window.opera;
-            if (ua.indexOf("FBAN") > -1 || ua.indexOf("FBAV") > -1 || ua.indexOf("Zalo") > -1) {
+            const isSocialBrowser = /FBAN|FBAV|Zalo|Instagram|TikTok|Line/i.test(ua);
+            
+            if (isSocialBrowser) {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('browser-warning').classList.replace('hidden', 'flex');
             }
             document.addEventListener('contextmenu', event => event.preventDefault());
         });
 
-        // --- CÁC BIẾN TOÀN CỤC ---
-        let hsInfo = {}; let cauTrucDe = {}; let answers = { P1: [], P2: [], P3: [], DK: [] }; let cauHinhPhong = {};
-        let timerInterval; let examStarted = false;
-        let warnings = 0; 
-        let viPhamHistory = []; 
-        let videoStream = null;
+        // --- KHỞI TẠO KẾT NỐI FIREBASE FIRESTORE ---
+        const firebaseConfig = {
+            // THẦY DÁN CHÌA KHÓA TỪ TRANG CHỦ FIREBASE VÀO TRONG DẤU NGOẶC NHỌN NÀY
+            apiKey: "AIzaSyCAVC2KqBhH8pkuJnhkgq0gb2HyrIV-Vlo",
+            authDomain: "ptschool-khaothi.firebaseapp.com",
+            projectId: "ptschool-khaothi",
+            storageBucket: "ptschool-khaothi.firebasestorage.app",
+            messagingSenderId: "450442723549",
+            appId: "1:450442723549:web:2ba0d1302148d60b0b1b34"
+        };
+        
+        // Kích hoạt động cơ Firestore
+        firebase.initializeApp(firebaseConfig);
+        const dbFirestore = firebase.firestore();
         // --- CẦU KẾT NỐI API (THAY THẾ GOOGLE.SCRIPT.RUN) ---
         // THẦY PHẢI DÁN ĐƯỜNG LINK GOOGLE SCRIPT MỚI VÀO DẤU NGOẶC KÉP BÊN DƯỚI:
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxj1YREAI1oBZB6wiuX7bLd1Fb7A38KcbMhcoahCjenOqH21G3h1NBHt1YWhq77vHv6Q/exec";
@@ -828,7 +842,7 @@
                     let dsLop = new Set();
                     allInOneData.nhiemVu.forEach(nv => {
                         if (nv[8]) {
-                            nv[8].split(',').forEach(l => {
+                            String(nv[8]).split(',').forEach(l => {
                                let trimmed = l.trim().toUpperCase();
                                if(trimmed !== "" && trimmed !== "TẤT CẢ") dsLop.add(trimmed);
                             });
@@ -1022,7 +1036,7 @@
             // Đổ danh sách Lớp vào ô chọn
             let dsLop = new Set();
             allInOneData.nhiemVu.forEach(nv => {
-                if (nv[8]) nv[8].split(',').forEach(l => {
+                if (nv[8]) String(nv[8]).split(',').forEach(l => {
                     let trimmed = l.trim().toUpperCase();
                     if(trimmed !== "" && trimmed !== "TẤT CẢ") dsLop.add(trimmed);
                 });
@@ -1312,6 +1326,7 @@
         let chotChanPopUp = false; 
         let currentCourseData = null;
         let currentVideoIndex = 0;
+        let maxVideoPercent = 0; // Biến nhớ lưu tiến độ % học cao nhất cục bộ
 
         // Trình duyệt tự gọi hàm này khi tải xong thư viện Youtube
         function onYouTubeIframeAPIReady() {} 
@@ -1341,6 +1356,7 @@
 
         function loadVideo(index) {
             currentVideoIndex = index;
+            maxVideoPercent = 0; // Reset % khi sang bài mới
             let vidData = currentCourseData.videos[index];
             document.getElementById('video-title').innerText = "Bài " + (index + 1) + ": " + vidData.tenVideo;
             renderPlaylist(); 
@@ -1384,10 +1400,20 @@
             let currentTime = ytPlayer.getCurrentTime();
             let vidData = currentCourseData.videos[currentVideoIndex];
             
-            // Báo cáo tiến độ 30s/lần
-            if(Math.floor(currentTime) % 30 === 0 && Math.floor(currentTime) > 0) {
-                let percent = Math.round((currentTime / ytPlayer.getDuration()) * 100);
-                guiDuLieu("capNhatTienTrinh", { sbd: hsInfo.sbd, maLop: hsInfo.lop, hoTen: hsInfo.hoTen, maNhiemVu: hsInfo.maDotThi + "_Bai" + (currentVideoIndex+1), tienDo: percent, trangThai: "Đang học" });
+            // LƯU TIẾN ĐỘ VÀO BỘ ĐỆM (KHÔNG BẮN LÊN MÁY CHỦ MỖI 30S NỮA)
+            if (ytPlayer.getDuration() > 0) {
+                let currentPercent = Math.round((currentTime / ytPlayer.getDuration()) * 100);
+                if (currentPercent > maxVideoPercent) maxVideoPercent = currentPercent;
+                
+                // Tự động chốt 100% lên máy chủ ĐÚNG 1 LẦN duy nhất khi xem đến cuối video
+                if (currentPercent >= 98 && !vidData.daBaoCaoHoanThanh) {
+                    vidData.daBaoCaoHoanThanh = true; // Khóa cờ an toàn
+                    guiDuLieu("capNhatTienTrinh", { 
+                        sbd: hsInfo.sbd, maLop: hsInfo.lop, hoTen: hsInfo.hoTen, 
+                        maNhiemVu: hsInfo.maDotThi + "_Bai" + (currentVideoIndex+1), 
+                        tienDo: 100, trangThai: "Hoàn thành" 
+                    });
+                }
             }
 
             // Quét danh sách để thả Pop-up đúng thời điểm
@@ -1508,6 +1534,17 @@
 
         function thoatVideo() {
             if(ytPlayer) ytPlayer.pauseVideo();
+            
+            // XẢ BỘ ĐỆM: Bắn tiến độ xem video dở dang lên máy chủ ĐÚNG 1 LẦN khi học sinh bấm thoát
+            let vidData = currentCourseData.videos[currentVideoIndex];
+            if (!vidData.daBaoCaoHoanThanh && maxVideoPercent > 0) {
+                guiDuLieu("capNhatTienTrinh", { 
+                    sbd: hsInfo.sbd, maLop: hsInfo.lop, hoTen: hsInfo.hoTen, 
+                    maNhiemVu: hsInfo.maDotThi + "_Bai" + (currentVideoIndex+1), 
+                    tienDo: maxVideoPercent, trangThai: "Đang học" 
+                });
+            }
+
             document.getElementById('video-screen').classList.add('hidden');
             document.getElementById('dashboard-screen').classList.remove('hidden');
         }
@@ -1666,7 +1703,7 @@
         let heartbeatInterval;
 
         function startHeartbeat() {
-            // Cứ 15 giây hỏi thăm Google Script 1 lần
+            // GIẢM TẢI: Giãn cách 60 giây hỏi thăm 1 lần để cứu máy chủ Google Sheets
             heartbeatInterval = setInterval(async () => {
                 if (!examStarted) return;
                 try {
@@ -1675,7 +1712,7 @@
                         thucHienChupLen();
                     }
                 } catch (e) {}
-            }, 15000); 
+            }, 60000); 
         }
 
         function thucHienChupLen() {
@@ -1786,11 +1823,31 @@
         function luuP3(qIndex, val) { answers.P3[qIndex] = val; autoSaveDraft(); }
 
         function startTimer(minutes) {
-            let seconds = minutes * 60; let timerEl = document.getElementById('countdown-timer');
+            let timerEl = document.getElementById('countdown-timer');
+            
+            // 1. Tính mốc thời gian kết thúc tuyệt đối bằng thời gian thực tế
+            let thoiGianKetThuc = Date.now() + (minutes * 60 * 1000);
+            
+            // 2. Khôi phục nếu học sinh vô tình bị rớt mạng hoặc F5 tải lại trang
+            let savedEndTime = localStorage.getItem(`timer_${hsInfo.maDotThi}_${hsInfo.sbd}`);
+            if (savedEndTime) {
+                thoiGianKetThuc = parseInt(savedEndTime);
+            } else {
+                localStorage.setItem(`timer_${hsInfo.maDotThi}_${hsInfo.sbd}`, thoiGianKetThuc.toString());
+            }
+
             timerInterval = setInterval(() => {
-                seconds--; let m = Math.floor(seconds / 60).toString().padStart(2, '0'); let s = (seconds % 60).toString().padStart(2, '0');
+                // 3. Đếm ngược dựa trên đồng hồ của trái đất (Chống đóng băng ứng dụng)
+                let thoiGianConLai = Math.max(0, Math.floor((thoiGianKetThuc - Date.now()) / 1000));
+                
+                let m = Math.floor(thoiGianConLai / 60).toString().padStart(2, '0'); 
+                let s = (thoiGianConLai % 60).toString().padStart(2, '0');
                 timerEl.innerText = `${m}:${s}`;
-                if (seconds <= 0) { clearInterval(timerInterval); thucHienNopTracNghiem(); }
+                
+                if (thoiGianConLai <= 0) { 
+                    clearInterval(timerInterval); 
+                    thucHienNopTracNghiem(); 
+                }
             }, 1000);
         }
 
@@ -1826,6 +1883,9 @@
                 // XÓA NHÁP ĐỂ KHÔNG ẢNH HƯỞNG BÀI THI MÔN SAU
                 let draftKey = `draft_${hsInfo.maDotThi}_${hsInfo.sbd}`;
                 localStorage.removeItem(draftKey);
+                // Xóa luôn mốc thời gian tuyệt đối của môn này
+                localStorage.removeItem(`timer_${hsInfo.maDotThi}_${hsInfo.sbd}`);
+                localStorage.removeItem(`timer_${hsInfo.maDotThi}_${hsInfo.sbd}`); // Dọn dẹp thời gian
                 
                 if (videoStream) { videoStream.getTracks().forEach(track => track.stop()); }
                 
@@ -1937,6 +1997,15 @@
             }
         }
   </script>
+  <script>
+    // KÍCH HOẠT TRẠM GÁC NGOẠI TUYẾN (SERVICE WORKER)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('✅ Đã đăng ký Trạm gác PWA (Tải AI Offline) thành công!', reg.scope))
+          .catch(err => console.log('⚠️ Lỗi đăng ký PWA:', err));
+      });
+    }
+  </script>
 </body>
-
 </html>
